@@ -5,5 +5,9 @@
   "devDependencies": {
     "gh-pages": "^6.1.1",
     "vite": "^5.0.11"
+  },
+  "scripts": {
+    "predeploy": "npx vite build",
+    "deploy": "gh-pages -d build"
   }
 }
