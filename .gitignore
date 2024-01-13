@@ -2,3 +2,4 @@
 /dist
 deployment_scripts.txt
 /.idea
+.idea/*
