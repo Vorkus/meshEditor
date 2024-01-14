@@ -1,4 +1,5 @@
 {
+  "homepage": "https://vorkus.github.io/meshEditor/",
   "dependencies": {
     "three": "^0.160.0"
   },
