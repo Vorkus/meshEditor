@@ -13,9 +13,6 @@ function addCube(scene) {
     const wireframe = new THREE.WireframeGeometry(geometry);
     const material = new THREE.MeshBasicMaterial( {
         color: 0x000000,
-        linewidth: 1,
-        linecap: 'round', //ignored by WebGLRenderer
-        linejoin:  'round' //ignored by WebGLRenderer
     } );
 
     cube = new THREE.LineSegments( wireframe, material );
