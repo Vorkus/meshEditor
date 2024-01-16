@@ -1,7 +1,7 @@
 import {initializeScene} from "./scene";
 import {initializeCamera} from "./camera";
 import {initializeRenderer} from "./renderer";
-import {getControls, initializeHelpers} from "./helpers";
+import {controlsIsActive, getControls, initializeHelpers} from "./helpers";
 import {addModel, intersects} from "./model";
 import * as THREE from "three";
 
@@ -12,7 +12,7 @@ const pointer = new THREE.Vector2();
 
 
 initialize();
-window.addEventListener( 'pointermove', onPointerMove );
+window.addEventListener( 'click', onPointerMove );
 window.addEventListener( 'resize', onWindowResize );
 animate();
 
@@ -31,25 +31,24 @@ function animate() {
 }
 
 function onPointerMove( event ) {
+    console.log(controlsIsActive)
+    if (!controlsIsActive) {
 
-    // calculate pointer position in normalized device coordinates
-    // (-1 to +1) for both components
+        // calculate pointer position in normalized device coordinates
+        // (-1 to +1) for both components
 
-    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+        pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+        // update the picking ray with the camera and pointer position
+        raycaster.setFromCamera(pointer, camera);
+        // calculate objects intersecting the picking ray
+        intersects(raycaster);
+    }
 }
 
 function render() {
-
-    // update the picking ray with the camera and pointer position
-    raycaster.setFromCamera( pointer, camera );
-
-    // calculate objects intersecting the picking ray
-    intersects(raycaster);
-
     renderer.render( scene, camera );
-
 }
 
 function onWindowResize() {

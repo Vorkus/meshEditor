@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls";
 
+export let controlsIsActive = false;
 let controls;
 
 export function initializeHelpers(scene, camera, renderer) {
@@ -29,4 +30,12 @@ function addAxes(scene) {
 function initializeOrbitControls(camera, renderer) {
     controls = new OrbitControls( camera, renderer.domElement );
     controls.enablePan = false;
+
+    controls.addEventListener('start', function () {
+        controlsIsActive = true;
+    });
+
+    controls.addEventListener('end', function () {
+        controlsIsActive = false;
+    });
 }
