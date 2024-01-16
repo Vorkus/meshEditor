@@ -1,12 +1,10 @@
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls";
 
-export let controlsIsActive = false;
 let controls;
 
 export function initializeHelpers(scene, camera, renderer) {
     addGrid(scene);
-    addAxes(scene);
     initializeOrbitControls(camera, renderer);
 }
 
@@ -22,20 +20,11 @@ function addGrid(scene) {
     scene.add( gridHelper );
 }
 
-function addAxes(scene) {
-    const axesHelper = new THREE.AxesHelper( 5 );
-    scene.add( axesHelper );
-}
-
 function initializeOrbitControls(camera, renderer) {
     controls = new OrbitControls( camera, renderer.domElement );
     controls.enablePan = false;
-
-    controls.addEventListener('start', function () {
-        controlsIsActive = true;
-    });
-
-    controls.addEventListener('end', function () {
-        controlsIsActive = false;
-    });
+    controls.mouseButtons = {
+        MIDDLE: THREE.MOUSE.DOLLY,
+        RIGHT: THREE.MOUSE.ROTATE,
+    };
 }
