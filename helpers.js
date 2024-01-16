@@ -1,15 +1,18 @@
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls";
+import {DragControls} from "three/addons";
+import {repositionVertices, vertexChangeStart, vertices} from "./model";
 
-let controls;
+export let orbitControls, dragControls;
 
 export function initializeHelpers(scene, camera, renderer) {
     addGrid(scene);
     initializeOrbitControls(camera, renderer);
+    initializeDragControls(camera, renderer);
 }
 
-export function getControls() {
-    return controls;
+export function toogleDragControls(enable) {
+    dragControls.enabled = enable;
 }
 
 function addGrid(scene) {
@@ -21,10 +24,18 @@ function addGrid(scene) {
 }
 
 function initializeOrbitControls(camera, renderer) {
-    controls = new OrbitControls( camera, renderer.domElement );
-    controls.enablePan = false;
-    controls.mouseButtons = {
+    orbitControls = new OrbitControls( camera, renderer.domElement );
+    orbitControls.enablePan = false;
+    orbitControls.mouseButtons = {
         MIDDLE: THREE.MOUSE.DOLLY,
         RIGHT: THREE.MOUSE.ROTATE,
     };
+}
+
+function initializeDragControls(camera, renderer) {
+    dragControls = new DragControls(vertices, camera, renderer.domElement)
+    dragControls.enabled = false;
+
+    dragControls.addEventListener('dragstart', vertexChangeStart)
+    dragControls.addEventListener('dragend', repositionVertices)
 }

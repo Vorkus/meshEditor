@@ -1,7 +1,7 @@
 import {initializeScene} from "./scene";
 import {initializeCamera} from "./camera";
 import {initializeRenderer} from "./renderer";
-import {getControls, initializeHelpers} from "./helpers";
+import {initializeHelpers, orbitControls} from "./helpers";
 import {initializeModel, checkIntersection} from "./model";
 import * as THREE from "three";
 import {initializeGUI} from "./GUI";
@@ -19,8 +19,8 @@ function initialize() {
     scene = initializeScene();
     camera = initializeCamera();
     renderer = initializeRenderer();
+    initializeModel(scene, camera, renderer, orbitControls);
     initializeHelpers(scene, camera, renderer);
-    initializeModel(scene, camera, renderer, getControls());
     initializeGUI();
 }
 
