@@ -5,6 +5,7 @@ let controls;
 
 export function initializeHelpers(scene, camera, renderer) {
     addGrid(scene);
+    addAxes(scene);
     initializeOrbitControls(camera, renderer);
 }
 
@@ -18,6 +19,11 @@ function addGrid(scene) {
     const gridHelper = new THREE.GridHelper( size, divisions );
     gridHelper.position.y = -5;
     scene.add( gridHelper );
+}
+
+function addAxes(scene) {
+    const axesHelper = new THREE.AxesHelper( 5 );
+    scene.add( axesHelper );
 }
 
 function initializeOrbitControls(camera, renderer) {
