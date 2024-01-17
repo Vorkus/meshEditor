@@ -36,9 +36,10 @@ function onWindowResize() {
 }
 
 function onClick( event ) {
-    // calculate pointer position in normalized device coordinates
-    // (-1 to +1) for both components
-
+    // calculate pointer position in normalized device coordinates (-1 to +1) for both components
+    // MouseEvent ranges [0, innerWidth] for x and [0, innerHeight] for y, with 0,0 on top left 
+    // Additionally to normalization, Y must be inverted since in MouseEvent going down on vertical axis is positive  
+    
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
