@@ -1,6 +1,6 @@
 import {icosahedronMesh, initializeIcosahedron} from "./icosahedron";
 import {initializeIcosahedronWireframe} from "./icosahedronWireframe";
-import {initializeVertices} from "./vertices";
+import {initializeVertices} from "./verticesMeshes";
 import {controller, modeEditVertices} from "../GUI";
 import {raycaster} from "../main";
 import * as THREE from "three";

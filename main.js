@@ -15,9 +15,9 @@ window.addEventListener('click', onClick);
 animate();
 
 function initialize() {
-    initializeGUI();
     initializeModel();
     initializeHelpers();
+    initializeGUI();
 }
 
 function animate() {

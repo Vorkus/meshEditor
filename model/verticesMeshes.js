@@ -4,7 +4,7 @@ import {scene} from "../scene";
 import {geometry, icosahedronMesh} from "./icosahedron";
 import {icosahedronWireframeMesh} from "./icosahedronWireframe";
 
-export const vertices = [];
+export const verticesMeshes = [];
 let vertexOriginalPosition;
 
 export function initializeVertices() {
@@ -35,9 +35,16 @@ export function initializeVertices() {
                 verticesPosition.getZ(i),
             );
 
-            vertices.push(verticeMesh);
+            verticesMeshes.push(verticeMesh);
             scene.add(verticeMesh);
         }
+    }
+}
+
+export function toggleVertices(show) {
+    for (let i = 0; i < verticesMeshes.length;  i++) {
+        console.log(verticesMeshes[i]);
+        verticesMeshes[i].visible = show;
     }
 }
 
