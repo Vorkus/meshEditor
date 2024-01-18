@@ -1,13 +1,14 @@
 import * as THREE from "three";
-import {controller} from "./GUI";
 import {Vector3} from "three";
+import {scene} from "./scene";
+import {controller, modeEditVertices} from "./GUI";
+import {raycaster} from "./main";
 
 export let vertices;
 let icosahedron, wiredIcosahedron, vertexOriginalPosition;
 
-export function initializeModel(scene) {
+export function initializeModel() {
     const object = new THREE.Object3D();
-
     const geometry = initializeIcosahedronGeometry();
     object.add(initializeIcosahedronMesh(geometry));
     object.add(initializeWiredIcosahedron(geometry));
@@ -16,8 +17,8 @@ export function initializeModel(scene) {
     scene.add(object);
 }
 
-export function checkIntersection(raycaster) {
-    if (!controller.enable) {
+export function checkIntersection() {
+    if (controller.mode !== modeEditVertices) {
         let intersects = raycaster.intersectObject(icosahedron);
         if (intersects.length > 0) {
             const face = intersects[0].face;

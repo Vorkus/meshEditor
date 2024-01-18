@@ -1,13 +1,12 @@
-import {initializeScene} from "./scene";
-import {initializeCamera} from "./camera";
-import {initializeRenderer} from "./renderer";
-import {initializeHelpers, orbitControls} from "./helpers";
+import {scene} from "./scene";
+import {camera} from "./camera";
+import {renderer} from "./renderer";
+import {initializeHelpers} from "./helpers";
 import {initializeModel, checkIntersection} from "./model";
 import * as THREE from "three";
 import {initializeGUI} from "./GUI";
 
-let scene, camera, renderer;
-const raycaster = new THREE.Raycaster();
+export const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
 initialize();
@@ -16,12 +15,9 @@ window.addEventListener( 'click', onClick );
 animate();
 
 function initialize() {
-    scene = initializeScene();
-    camera = initializeCamera();
-    renderer = initializeRenderer();
-    initializeModel(scene, camera, renderer, orbitControls);
-    initializeHelpers(scene, camera, renderer);
     initializeGUI();
+    initializeModel();
+    initializeHelpers();
 }
 
 function animate() {
@@ -45,5 +41,5 @@ function onClick( event ) {
 
     // update the picking ray with the camera and pointer position
     raycaster.setFromCamera(pointer, camera);
-    checkIntersection(raycaster);
+    checkIntersection();
 }
