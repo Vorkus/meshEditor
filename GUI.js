@@ -2,18 +2,31 @@ import GUI from "lil-gui";
 import {toogleDragControls} from "./helpers";
 
 export const controller = {
+    mode: 'Paint faces',
     color: '#FF0000',
-    enable: false,
 };
+let paintDiceFolder;
 
 export function initializeGUI() {
     const gui = new GUI();
 
-    let folder = gui.addFolder( 'Paint the dice' );
-    folder.addColor( controller, 'color' );
+    gui.add(controller, 'mode', ['Paint faces', 'Edit vertices']).onChange(() => {
+        reset();
 
-    folder = gui.addFolder('Edit the vertices');
-    folder.add(controller, 'enable').onChange(() => {
-        toogleDragControls(controller.enable);
+        if ('Paint faces' === controller.mode) {
+            paintDiceFolder.show();
+        } else if ('Edit vertices' === controller.mode) {
+            toogleDragControls(true);
+        }
     });
+
+    paintDiceFolder = gui.addFolder( 'Paint the dice' );
+    paintDiceFolder.addColor( controller, 'color' );
+
+
+}
+
+function reset() {
+    toogleDragControls(false);
+    paintDiceFolder.hide();
 }
