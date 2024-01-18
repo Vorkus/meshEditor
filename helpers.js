@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls";
 import {DragControls} from "three/addons";
-import {repositionVertices, vertexChangeStart, vertices} from "./model";
 import {scene} from "./scene";
 import {camera} from "./camera";
 import {renderer} from "./renderer";
+import {repositionVertices, vertexChangeStart, vertices} from "./model/vertices";
 
 let dragControls;
 
@@ -21,13 +21,13 @@ export function toogleDragControls(enable) {
 function addGrid() {
     const size = 50;
     const divisions = 20;
-    const gridHelper = new THREE.GridHelper( size, divisions );
+    const gridHelper = new THREE.GridHelper(size, divisions);
     gridHelper.position.y = -5;
-    scene.add( gridHelper );
+    scene.add(gridHelper);
 }
 
 function initializeOrbitControls() {
-    const orbitControls = new OrbitControls( camera, renderer.domElement );
+    const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enablePan = false;
     orbitControls.mouseButtons = {
         MIDDLE: THREE.MOUSE.DOLLY,
