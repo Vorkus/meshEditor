@@ -12,7 +12,7 @@ export function initializeIcosahedron() {
 }
 
 function initializeIcosahedronGeometry() {
-    geometry = new THREE.IcosahedronGeometry(2);
+    geometry = new THREE.IcosahedronGeometry(1);
 }
 
 function initializeFacesColor() {

@@ -4,7 +4,7 @@ import {DragControls} from "three/addons";
 import {scene} from "./scene";
 import {camera} from "./camera";
 import {renderer} from "./renderer";
-import {verticesMeshes, verticesUpdate} from "./model/verticesMeshes";
+import {verticesMeshes, verticesUpdate} from "./model/vertices";
 
 let dragControls;
 

@@ -1,39 +1,26 @@
 import * as THREE from "three";
 import {Vector3} from "three";
 import {scene} from "../scene";
-import {geometry, icosahedronMesh} from "./icosahedron";
+import {icosahedronMesh} from "./icosahedron";
 import {icosahedronWireframeMesh} from "./icosahedronWireframe";
 import {verticesGroups} from "./model";
 
 export const verticesMeshes = [];
 
 export function initializeVertices() {
-    const verticesPosition = geometry.getAttribute('position');
+    const verticesPosition = icosahedronMesh.geometry.getAttribute('position');
     const alreadyInitializedVertices = [];
     for (let i = 0; i < verticesPosition.count; i++) {
-        if (!vertexIsInitialized(
-            alreadyInitializedVertices,
-            verticesPosition.getX(i),
-            verticesPosition.getY(i),
-            verticesPosition.getZ(i),
-        )
-        ) {
-            alreadyInitializedVertices.push(new Vector3(
-                verticesPosition.getX(i),
-                verticesPosition.getY(i),
-                verticesPosition.getZ(i),
-            ));
+        const vertex = icosahedronMesh.getVertexPosition(i, new Vector3());
+        if (!vertexIsInitialized(alreadyInitializedVertices, vertex)) {
+            alreadyInitializedVertices.push(vertex);
 
             const verticeMesh = new THREE.Mesh(
-                new THREE.SphereGeometry(0.1),
+                new THREE.SphereGeometry(0.075),
                 new THREE.MeshBasicMaterial({color: 0x000000})
             );
 
-            verticeMesh.position.set(
-                verticesPosition.getX(i),
-                verticesPosition.getY(i),
-                verticesPosition.getZ(i),
-            );
+            verticeMesh.position.set(vertex.x, vertex.y, vertex.z);
 
             verticesMeshes.push(verticeMesh);
             scene.add(verticeMesh);
@@ -42,7 +29,7 @@ export function initializeVertices() {
 }
 
 export function toggleVertices(show) {
-    for (let i = 0; i < verticesMeshes.length;  i++) {
+    for (let i = 0; i < verticesMeshes.length; i++) {
         verticesMeshes[i].visible = show;
     }
 }
@@ -61,9 +48,9 @@ export function isSameVertex(vertex1, vertex2, fixed = 5) {
         && vertex1.z.toFixed(fixed) === vertex2.z.toFixed(fixed);
 }
 
-function vertexIsInitialized(alreadyInitializedVertices, x, y, z) {
+function vertexIsInitialized(alreadyInitializedVertices, vertex) {
     for (let i = 0; i < alreadyInitializedVertices.length; i++) {
-        if (isSameVertex(alreadyInitializedVertices[i], new Vector3(x, y, z))) {
+        if (isSameVertex(alreadyInitializedVertices[i], vertex)) {
             return true;
         }
     }
@@ -73,6 +60,11 @@ function vertexIsInitialized(alreadyInitializedVertices, x, y, z) {
 
 function updateVertices(mesh, indexesToUpdate, position) {
     const verticesPosition = mesh.geometry.getAttribute('position');
+
+    // If any change has been applied to the mesh it must be reflected on the point
+    // We pick the point that we want to move in world coordinates, so them must be translated to local
+    // We use a clone to not modify also the draggable vertex
+    position = mesh.worldToLocal(position.clone());
 
     indexesToUpdate.forEach((index) => {
         verticesPosition.setXYZ(
