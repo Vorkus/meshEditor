@@ -4,7 +4,7 @@ import {DragControls} from "three/addons";
 import {scene} from "./scene";
 import {camera} from "./camera";
 import {renderer} from "./renderer";
-import {repositionVertices, vertexChangeStart, verticesMeshes} from "./model/verticesMeshes";
+import {verticesMeshes, verticesUpdate} from "./model/verticesMeshes";
 
 let dragControls;
 
@@ -39,6 +39,5 @@ function initializeDragControls() {
     dragControls = new DragControls(verticesMeshes, camera, renderer.domElement)
     dragControls.enabled = false;
 
-    dragControls.addEventListener('dragstart', vertexChangeStart)
-    dragControls.addEventListener('dragend', repositionVertices)
+    dragControls.addEventListener('drag', verticesUpdate)
 }

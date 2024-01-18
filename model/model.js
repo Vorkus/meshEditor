@@ -1,14 +1,17 @@
 import {icosahedronMesh, initializeIcosahedron} from "./icosahedron";
-import {initializeIcosahedronWireframe} from "./icosahedronWireframe";
-import {initializeVertices} from "./verticesMeshes";
+import {icosahedronWireframeMesh, initializeIcosahedronWireframe} from "./icosahedronWireframe";
+import {initializeVertices, isSameVertex, verticesMeshes} from "./verticesMeshes";
 import {controller, modeEditVertices} from "../GUI";
 import {raycaster} from "../main";
 import * as THREE from "three";
+
+export let verticesGroups = {};
 
 export function initializeModel() {
     initializeIcosahedron();
     initializeIcosahedronWireframe();
     initializeVertices();
+    initializeVerticesGroups();
 }
 
 export function checkIntersection() {
@@ -26,4 +29,31 @@ export function checkIntersection() {
             colorAttribute.needsUpdate = true;
         }
     }
+}
+
+function initializeVerticesGroups() {
+    for (let i = 0; i < verticesMeshes.length; i++) {
+        let vertex = verticesMeshes[i];
+        verticesGroups[vertex.id] = [];
+        verticesGroups[vertex.id]['icosahedron'] = getVerticesAtPosition(icosahedronMesh, vertex.position);
+        verticesGroups[vertex.id]['icosahedronWireframe'] = getVerticesAtPosition(icosahedronWireframeMesh, vertex.position);
+    }
+}
+
+function getVerticesAtPosition(mesh, position) {
+    const positionAttribute = mesh.geometry.getAttribute('position');
+    let verticesIndexes = [];
+
+    for (let i = 0; i < positionAttribute.count; i++) {
+        const vertex = new THREE.Vector3(
+            positionAttribute.getX(i),
+            positionAttribute.getY(i),
+            positionAttribute.getZ(i)
+        );
+        if (isSameVertex(vertex, position)) {
+            verticesIndexes.push(i);
+        }
+    }
+
+    return verticesIndexes;
 }
