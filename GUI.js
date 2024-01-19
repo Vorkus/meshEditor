@@ -1,7 +1,7 @@
 import GUI from "lil-gui";
 import {toogleDragControls} from "./helpers";
 import {toggleVertices, verticesMeshes} from "./model/vertices";
-import {scale} from "./model/model";
+import {transform} from "./model/transform/transform";
 
 export const modePaintFaces = 'Paint faces';
 export const modeSelectVertices = 'Vertex selection';
@@ -10,7 +10,9 @@ export const modeEditVertices = 'Vertex edition';
 export const controller = {
     mode: modePaintFaces,
     color: '#ff0000',
-    rotate: '',
+    rotateX: 0,
+    rotateY: 0,
+    rotateZ: 0,
     scale: 1,
     radius: 1.0,
     selectionColor: '#00ff00',
@@ -36,7 +38,10 @@ export function initializeGUI() {
     selectVerticesFolder.add(controller, 'Reset colors');
 
     const transformFolder = gui.addFolder('Transform');
-    transformFolder.add(controller, 'scale', 0.5, 2.5).onChange(scale);
+    transformFolder.add(controller, 'scale', 0.5, 2.5).onChange(transform);
+    transformFolder.add(controller, 'rotateX', 0, 2*Math.PI).onChange(transform);
+    transformFolder.add(controller, 'rotateY', 0, 2*Math.PI).onChange(transform);
+    transformFolder.add(controller, 'rotateZ', 0, 2*Math.PI).onChange(transform);
 
     reset();
     paintDiceFolder.show();
