@@ -4,7 +4,7 @@ import {renderer} from "./renderer";
 import {initializeHelpers} from "./helpers";
 import * as THREE from "three";
 import {initializeGUI} from "./GUI";
-import {checkIntersection, initializeModel} from "./model/model";
+import {checkClickIntersection, initializeModel} from "./model/model";
 
 export const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
@@ -33,13 +33,13 @@ function onWindowResize() {
 
 function onClick(event) {
     // calculate pointer position in normalized device coordinates (-1 to +1) for both components
-    // MouseEvent ranges [0, innerWidth] for x and [0, innerHeight] for y, with 0,0 on top left 
-    // Additionally to normalization, Y must be inverted since in MouseEvent going down on vertical axis is positive  
+    // MouseEvent ranges [0, innerWidth] for x and [0, innerHeight] for y, with 0,0 on top left
+    // Additionally to normalization, Y must be inverted since in MouseEvent going down on vertical axis is positive
 
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     // update the picking ray with the camera and pointer position
     raycaster.setFromCamera(pointer, camera);
-    checkIntersection();
+    checkClickIntersection();
 }

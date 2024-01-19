@@ -1,7 +1,7 @@
 import {icosahedronMesh, initializeIcosahedron} from "./icosahedron";
 import {icosahedronWireframeMesh, initializeIcosahedronWireframe} from "./icosahedronWireframe";
 import {initializeVertices, isSameVertex, verticesMeshes} from "./vertices";
-import {controller, modeEditVertices, modePaintFaces, modeSelectVertices} from "../GUI";
+import {controller, modePaintFaces, modeSelectVertices} from "../GUI";
 import {raycaster} from "../main";
 import * as THREE from "three";
 import {Vector3} from "three";
@@ -15,13 +15,13 @@ export function initializeModel() {
     initializeVerticesGroups();
 }
 
-export function checkIntersection() {
+export function checkClickIntersection() {
     if (modePaintFaces === controller.mode) {
         let intersects = raycaster.intersectObject(icosahedronMesh);
         if (intersects.length > 0) {
             const face = intersects[0].face;
             const color = new THREE.Color(controller.color);
-            const colorAttribute = intersects[0].object.geometry.getAttribute('color');
+            const colorAttribute = icosahedronMesh.geometry.getAttribute('color');
 
             colorAttribute.setXYZ(face.a, color.r, color.g, color.b);
             colorAttribute.setXYZ(face.b, color.r, color.g, color.b);
