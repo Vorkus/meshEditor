@@ -1,7 +1,7 @@
 import {icosahedronMesh, initializeIcosahedron} from "./icosahedron";
 import {icosahedronWireframeMesh, initializeIcosahedronWireframe} from "./icosahedronWireframe";
 import {initializeVertices, isSameVertex, verticesMeshes} from "./vertices";
-import {controller, modeEditVertices} from "../GUI";
+import {controller, modeEditVertices, modePaintFaces, modeSelectVertices} from "../GUI";
 import {raycaster} from "../main";
 import * as THREE from "three";
 import {Vector3} from "three";
@@ -16,7 +16,7 @@ export function initializeModel() {
 }
 
 export function checkIntersection() {
-    if (controller.mode !== modeEditVertices) {
+    if (modePaintFaces === controller.mode) {
         let intersects = raycaster.intersectObject(icosahedronMesh);
         if (intersects.length > 0) {
             const face = intersects[0].face;
@@ -28,6 +28,15 @@ export function checkIntersection() {
             colorAttribute.setXYZ(face.c, color.r, color.g, color.b);
 
             colorAttribute.needsUpdate = true;
+        }
+    } else if (modeSelectVertices === controller.mode) {
+        let intersects = raycaster.intersectObject(icosahedronMesh);
+        if (intersects.length > 0) {
+            verticesMeshes.forEach((vertexMesh) => {
+                if (controller.radius > distance(vertexMesh.position, intersects[0].point)) {
+                    vertexMesh.material.color.set(controller.selectionColor);
+                }
+            })
         }
     }
 }
@@ -75,4 +84,12 @@ function getVerticesAtPosition(mesh, position) {
     }
 
     return verticesIndexes;
+}
+
+function distance(a, b) {
+    return Math.sqrt(
+        Math.pow(b.x - a.x, 2) +
+        Math.pow(b.y - a.y, 2) +
+        Math.pow(b.z - a.z, 2)
+    );
 }
