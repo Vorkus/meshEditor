@@ -48,6 +48,14 @@ export function isSameVertex(vertex1, vertex2, fixed = 5) {
         && vertex1.z.toFixed(fixed) === vertex2.z.toFixed(fixed);
 }
 
+export function toggleVertexColor(vertexMesh, color) {
+    if (vertexMesh.material.color.equals(new THREE.Color(color))) {
+        vertexMesh.material.color.set(0x000000);
+    } else {
+        vertexMesh.material.color.set(color);
+    }
+}
+
 function vertexIsInitialized(alreadyInitializedVertices, vertex) {
     for (let i = 0; i < alreadyInitializedVertices.length; i++) {
         if (isSameVertex(alreadyInitializedVertices[i], vertex)) {

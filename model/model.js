@@ -1,6 +1,6 @@
 import {icosahedronMesh, initializeIcosahedron} from "./icosahedron";
 import {icosahedronWireframeMesh, initializeIcosahedronWireframe} from "./icosahedronWireframe";
-import {initializeVertices, isSameVertex, verticesMeshes} from "./vertices";
+import {initializeVertices, isSameVertex, toggleVertexColor, verticesMeshes} from "./vertices";
 import {controller, modePaintFaces, modeSelectVertices} from "../GUI";
 import {raycaster} from "../main";
 import * as THREE from "three";
@@ -34,7 +34,7 @@ export function checkClickIntersection() {
         if (intersects.length > 0) {
             verticesMeshes.forEach((vertexMesh) => {
                 if (controller.radius > distance(vertexMesh.position, intersects[0].point)) {
-                    vertexMesh.material.color.set(controller.selectionColor);
+                    toggleVertexColor(vertexMesh, controller.selectionColor);
                 }
             })
         }

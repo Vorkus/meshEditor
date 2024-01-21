@@ -21,10 +21,6 @@ function initializeFacesColor() {
     // Buffer geometries are non-indexed by default
     const count = geometry.attributes.position.count;
     geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(count * 3), 3));
-    const baseColor = new THREE.Color(0xffffff);
-    for (let i = 0; i < geometry.getAttribute('position').count; i++) {
-        geometry.getAttribute('color').setXYZ(i, baseColor.r, baseColor.g, baseColor.b);
-    }
 }
 
 function initializeIcosahedronMesh() {

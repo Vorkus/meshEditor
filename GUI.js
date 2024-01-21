@@ -2,6 +2,8 @@ import GUI from "lil-gui";
 import {toogleDragControls} from "./helpers";
 import {toggleVertices, verticesMeshes} from "./model/vertices";
 import {transform} from "./model/transform/transform";
+import * as THREE from "three";
+import {icosahedronMesh} from "./model/icosahedron";
 
 export const modePaintFaces = 'Paint faces';
 export const modeSelectVertices = 'Vertex selection';
@@ -17,6 +19,7 @@ export const controller = {
     radius: 1.0,
     selectionColor: '#00ff00',
     'Reset colors': resetColors,
+    'Reset selection': resetSelection,
 };
 let paintDiceFolder, selectVerticesFolder;
 
@@ -31,11 +34,12 @@ export function initializeGUI() {
 
     paintDiceFolder = gui.addFolder( 'Paint faces' );
     paintDiceFolder.addColor( controller, 'color' );
+    paintDiceFolder.add(controller, 'Reset colors');
 
     selectVerticesFolder = gui.addFolder('Select vertices');
     selectVerticesFolder.add(controller, 'radius', 0.5, 1.0);
     selectVerticesFolder.addColor(controller, 'selectionColor');
-    selectVerticesFolder.add(controller, 'Reset colors');
+    selectVerticesFolder.add(controller, 'Reset selection');
 
     const transformFolder = gui.addFolder('Transform');
     transformFolder.add(controller, 'scale', 0.5, 2.5).onChange(transform);
@@ -65,12 +69,22 @@ function reset() {
     toogleDragControls(false);
     toggleVertices(false);
     resetColors();
+    resetSelection();
 
     paintDiceFolder.hide();
     selectVerticesFolder.hide();
 }
 
 function resetColors() {
+    const baseColor = new THREE.Color(0xffffff);
+    const colorAttribute = icosahedronMesh.geometry.getAttribute('color');
+    for (let i = 0; i < colorAttribute.count; i++) {
+        colorAttribute.setXYZ(i, baseColor.r, baseColor.g, baseColor.b);
+    }
+    colorAttribute.needsUpdate = true;
+}
+
+function resetSelection() {
     verticesMeshes.forEach((vertexMesh) => {
         vertexMesh.material.color.set(0x000000);
     })
