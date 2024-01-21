@@ -4,6 +4,7 @@ import {toggleVertices, verticesMeshes} from "./model/vertices";
 import {transform} from "./model/transform/transform";
 import * as THREE from "three";
 import {icosahedronMesh} from "./model/icosahedron";
+import {toggleVisibility} from "./model/icosahedronWireframe";
 
 export const modePaintFaces = 'Paint faces';
 export const modeSelectVertices = 'Vertex selection';
@@ -20,6 +21,7 @@ export const controller = {
     selectionColor: '#00ff00',
     'Reset colors': resetColors,
     'Reset selection': resetSelection,
+    wireframe: true,
 };
 let paintDiceFolder, selectVerticesFolder;
 
@@ -42,6 +44,7 @@ export function initializeGUI() {
     selectVerticesFolder.add(controller, 'Reset selection');
 
     const transformFolder = gui.addFolder('Transform');
+    transformFolder.add(controller, 'wireframe').onChange(toggleVisibility);
     transformFolder.add(controller, 'scale', 0.5, 2.5).onChange(transform);
     transformFolder.add(controller, 'rotateX', 0, 2*Math.PI).onChange(transform);
     transformFolder.add(controller, 'rotateY', 0, 2*Math.PI).onChange(transform);

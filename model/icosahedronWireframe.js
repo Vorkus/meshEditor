@@ -5,11 +5,15 @@ import {scene} from "../scene";
 export let icosahedronWireframeMesh;
 
 export function initializeIcosahedronWireframe() {
-    const wiredMaterial = new THREE.MeshBasicMaterial({
+    const wireframeMaterial = new THREE.MeshBasicMaterial({
         color: 0x000000,
         wireframe: true,
     });
-    icosahedronWireframeMesh = new THREE.Mesh(geometry, wiredMaterial);
+    icosahedronWireframeMesh = new THREE.Mesh(geometry, wireframeMaterial);
 
     scene.add(icosahedronWireframeMesh);
+}
+
+export function toggleVisibility() {
+    icosahedronWireframeMesh.visible = !icosahedronWireframeMesh.visible;
 }
