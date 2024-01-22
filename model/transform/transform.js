@@ -43,7 +43,7 @@ function transformVertices() {
         // The transformations applied to icosahedron meshes must be applied to the coordinate too
         // The position of icosahedronMesh remains the same as the start,
         // applying the transformation matrix we get the final position of the point
-        const anyVertexInGroupIndex = Object.values(verticesGroups[vertexMesh.id]['icosahedron'])[0];
+        const anyVertexInGroupIndex = Object.values(verticesGroups[vertexMesh.id])[0];
         let newPosition = icosahedronMesh.getVertexPosition(anyVertexInGroupIndex, new Vector3());
         newPosition = icosahedronMesh.localToWorld(newPosition);
         vertexMesh.position.set(newPosition.x, newPosition.y, newPosition.z);

@@ -1,5 +1,5 @@
 import {icosahedronMesh, initializeIcosahedron} from "./icosahedron";
-import {icosahedronWireframeMesh, initializeIcosahedronWireframe} from "./icosahedronWireframe";
+import {initializeIcosahedronWireframe} from "./icosahedronWireframe";
 import {initializeVertices, isSameVertex, toggleVertexColor, verticesMeshes} from "./vertices";
 import {controller, modePaintFaces, modeSelectVertices} from "../GUI";
 import {raycaster} from "../main";
@@ -44,18 +44,16 @@ export function checkClickIntersection() {
 function initializeVerticesGroups() {
     for (let i = 0; i < verticesMeshes.length; i++) {
         let vertex = verticesMeshes[i];
-        verticesGroups[vertex.id] = [];
-        verticesGroups[vertex.id]['icosahedron'] = getVerticesAtPosition(icosahedronMesh, vertex.position);
-        verticesGroups[vertex.id]['icosahedronWireframe'] = getVerticesAtPosition(icosahedronWireframeMesh, vertex.position);
+        verticesGroups[vertex.id] = getVerticesAtPosition(vertex.position);
     }
 }
 
-function getVerticesAtPosition(mesh, position) {
-    const positionAttribute = mesh.geometry.getAttribute('position');
+function getVerticesAtPosition(position) {
+    const positionAttribute = icosahedronMesh.geometry.getAttribute('position');
     let verticesIndexes = [];
 
     for (let i = 0; i < positionAttribute.count; i++) {
-        const vertex = mesh.getVertexPosition(i, new Vector3());
+        const vertex = icosahedronMesh.getVertexPosition(i, new Vector3());
         if (isSameVertex(vertex, position)) {
             verticesIndexes.push(i);
         }

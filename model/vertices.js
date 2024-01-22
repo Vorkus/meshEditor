@@ -2,7 +2,6 @@ import * as THREE from "three";
 import {Vector3} from "three";
 import {scene} from "../scene";
 import {icosahedronMesh} from "./icosahedron";
-import {icosahedronWireframeMesh} from "./icosahedronWireframe";
 import {verticesGroups} from "./model";
 
 export const verticesMeshes = [];
@@ -38,8 +37,7 @@ export function verticesUpdate(event) {
     const vertexIndex = event.object.id;
     const position = event.object.position;
 
-    updateVertices(icosahedronMesh, verticesGroups[vertexIndex]['icosahedron'], position);
-    updateVertices(icosahedronWireframeMesh, verticesGroups[vertexIndex]['icosahedronWireframe'], position);
+    updateVertices(verticesGroups[vertexIndex], position);
 }
 
 export function isSameVertex(vertex1, vertex2, fixed = 5) {
@@ -66,16 +64,16 @@ function vertexIsInitialized(alreadyInitializedVertices, vertex) {
     return false;
 }
 
-function updateVertices(mesh, indexesToUpdate, position) {
-    const verticesPosition = mesh.geometry.getAttribute('position');
+function updateVertices(indexesToUpdate, position) {
+    const positionAttribute = icosahedronMesh.geometry.getAttribute('position');
 
     // If any change has been applied to the mesh it must be reflected on the point
     // We pick the point that we want to move in world coordinates, so them must be translated to local
     // We use a clone to not modify also the draggable vertex
-    position = mesh.worldToLocal(position.clone());
+    position = icosahedronMesh.worldToLocal(position.clone());
 
     indexesToUpdate.forEach((index) => {
-        verticesPosition.setXYZ(
+        positionAttribute.setXYZ(
             index,
             position.x,
             position.y,
@@ -84,7 +82,7 @@ function updateVertices(mesh, indexesToUpdate, position) {
     });
 
     // After modifying the vertices bounding limits become invalid, setting them to null will force raycaster to recompute them
-    mesh.geometry.boundingSphere = null;
-    mesh.geometry.boundingBox = null;
-    verticesPosition.needsUpdate = true;
+    icosahedronMesh.geometry.boundingSphere = null;
+    icosahedronMesh.geometry.boundingBox = null;
+    positionAttribute.needsUpdate = true;
 }
