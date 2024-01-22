@@ -93,6 +93,10 @@ function resetSelection() {
     })
 }
 
+function setWireframeVisibility(show) {
+    icosahedronWireframeMesh.visible = show;
+}
+
 function toggleVisibility() {
     icosahedronWireframeMesh.visible = !icosahedronWireframeMesh.visible;
 }
