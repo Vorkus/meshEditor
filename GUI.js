@@ -4,7 +4,7 @@ import {toggleVertices, verticesMeshes} from "./model/vertices";
 import {transform} from "./model/transform/transform";
 import * as THREE from "three";
 import {icosahedronMesh} from "./model/icosahedron";
-import {toggleVisibility} from "./model/icosahedronWireframe";
+import {icosahedronWireframeMesh} from "./model/icosahedronWireframe";
 
 export const modePaintFaces = 'Paint faces';
 export const modeSelectVertices = 'Vertex selection';
@@ -91,4 +91,8 @@ function resetSelection() {
     verticesMeshes.forEach((vertexMesh) => {
         vertexMesh.material.color.set(0x000000);
     })
+}
+
+function toggleVisibility() {
+    icosahedronWireframeMesh.visible = !icosahedronWireframeMesh.visible;
 }
