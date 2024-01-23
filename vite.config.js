@@ -1,3 +1,6 @@
+import glsl from 'vite-plugin-glsl';
+
 export default {
-    base: "/meshEditor/"
+    base: "/meshEditor/",
+    plugins: [ glsl() ]
 }

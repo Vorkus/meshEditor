@@ -7,7 +7,12 @@ import {initializeGUI} from "./GUI";
 import {checkClickIntersection, initializeModel} from "./model/model";
 
 export const raycaster = new THREE.Raycaster();
+export const uTime = {
+    type: 'f',
+    value: 0.0,
+};
 const pointer = new THREE.Vector2();
+const clock = new THREE.Clock();
 
 initialize();
 window.addEventListener('resize', onWindowResize);
@@ -22,6 +27,7 @@ function initialize() {
 
 function animate() {
     requestAnimationFrame(animate);
+    uTime.value = clock.getElapsedTime();
     renderer.render(scene, camera);
 }
 

@@ -6,9 +6,14 @@ import * as THREE from "three";
 import {icosahedronMesh} from "./model/icosahedron";
 import {icosahedronWireframeMesh} from "./model/icosahedronWireframe";
 
+import vertexShader from './shaders/vertex.glsl'
+import fragmentShader from './shaders/fragment.glsl'
+import {uTime} from "./main.js";
+
 export const modePaintFaces = 'Paint faces';
 export const modeSelectVertices = 'Vertex selection';
 export const modeEditVertices = 'Vertex edition';
+export const modeShader = 'Shaders';
 
 export const controller = {
     mode: modePaintFaces,
@@ -31,7 +36,8 @@ export function initializeGUI() {
     gui.add(controller, 'mode', [
         modePaintFaces,
         modeSelectVertices,
-        modeEditVertices
+        modeEditVertices,
+        modeShader,
     ]).onChange(manageModes);
 
     paintDiceFolder = gui.addFolder( 'Paint faces' );
@@ -65,6 +71,15 @@ function manageModes() {
     } else if (modeEditVertices === controller.mode) {
         toogleDragControls(true);
         toggleVertices(true);
+    } else if (modeShader === controller.mode) {
+        setWireframeVisibility(true);
+        icosahedronMesh.material = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: uTime,
+            },
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+        });
     }
 }
 
@@ -72,6 +87,7 @@ function reset() {
     toogleDragControls(false);
     toggleVertices(false);
     resetColors();
+    resetMaterial();
     resetSelection();
 
     paintDiceFolder.hide();
@@ -85,6 +101,12 @@ function resetColors() {
         colorAttribute.setXYZ(i, baseColor.r, baseColor.g, baseColor.b);
     }
     colorAttribute.needsUpdate = true;
+}
+
+function resetMaterial() {
+    icosahedronMesh.material = new THREE.MeshBasicMaterial({
+        vertexColors: true,
+    });
 }
 
 function resetSelection() {
